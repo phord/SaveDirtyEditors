@@ -1,0 +1,19 @@
+Functionality:
+--------------
+1) Add preference page to set save interval.
+2) Save dirty editors based on time interval from preferences.
+3) Save into the metadata area (thanks to Douglas Pollock for suggesting this: https://bugs.eclipse.org/bugs/show_bug.cgi?id=34076#c14)
+4) Discard from metadata area when normal save occurs.
+	org.eclipse.ui.actions.ActionFactory.SAVE.addPropertyChangeListener(IPropertyChangeListener listener)
+	org.eclipse.ui.actions.ActionFactory.SAVE_ALL.addPropertyChangeListener(IPropertyChangeListener listener)
+	IWorkbenchPage.CHANGE_EDITOR_CLOSE
+5) In case of abnormal shutdown (ie the metadata area contains a version), on next startup, resolve conflicts using compare window.
+6) Support Eclipse v 3.1
+7) Do NOT trigger a save when a refactoring dialog or Eclipse preferences dialog shows up.
+
+Support:
+--------
+1) Host project.
+2) Create help/usage docs.
+3) Create home page.
+4) Create update site.

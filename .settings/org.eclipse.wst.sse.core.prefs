@@ -1,0 +1,5 @@
+#Thu Dec 22 19:58:56 CST 2005
+eclipse.preferences.version=1
+task-tags/taskPriorities=1,2,1,1,2
+task-tags/taskTags=TODO,FIXME,XXX,HACKTAG,REDTAG
+task-tags/use-project-settings=true
