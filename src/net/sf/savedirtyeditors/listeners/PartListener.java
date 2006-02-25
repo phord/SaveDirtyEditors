@@ -12,13 +12,12 @@ package net.sf.savedirtyeditors.listeners;
 
 import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.jobs.SaveFileSnapshotJob;
+import net.sf.savedirtyeditors.utils.Messages;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
@@ -27,9 +26,8 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public final class PartListener implements IPartListener {
     /**
-     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, and its input is a
-     * {@link IFileEditorInput}, then it creates a new instance of {@link SaveFileSnapshotJob} for that specific
-     * {@link IFileEditorInput}
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, then it creates a new instance of
+     * {@link SaveFileSnapshotJob} for that specific {@link IEditorPart}
      * 
      * @param part
      *            The {@link IWorkbenchPart} that was opened
@@ -40,20 +38,15 @@ public final class PartListener implements IPartListener {
             return;
         }
 
-        PluginActivator.logDebug("Monitoring part"); //$NON-NLS-1$
+        PluginActivator.logDebug(Messages.getString("PartListener.part.monitoring")); //$NON-NLS-1$
 
         // create a scheduled job which will in turn call the save action at specified time intervals
-        IEditorPart editorPart = (IEditorPart) part;
-        IPersistableElement persistable = editorPart.getEditorInput().getPersistable();
-        if (persistable instanceof IFileEditorInput) {
-            new SaveFileSnapshotJob((IFileEditorInput) persistable);
-        }
+        new SaveFileSnapshotJob((IEditorPart) part);
     }
 
     /**
-     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, and its input is a
-     * {@link IFileEditorInput}, then it finds the specific {@link Job} associated with that {@link IFileEditorInput}
-     * and marks it as completed.
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, then it finds the specific
+     * {@link Job} associated with that {@link IEditorPart} and marks it as completed.
      * 
      * @param part
      *            The {@link IWorkbenchPart} that was closed
@@ -64,18 +57,14 @@ public final class PartListener implements IPartListener {
             return;
         }
 
-        PluginActivator.logDebug("Unmonitoring part"); //$NON-NLS-1$
+        PluginActivator.logDebug(Messages.getString("PartListener.part.unmonitoring")); //$NON-NLS-1$
 
         // Remove job
-        IEditorPart editorPart = (IEditorPart) part;
-        IPersistableElement persistable = editorPart.getEditorInput().getPersistable();
-        if (persistable instanceof IFileEditorInput) {
-            Job[] jobs = Platform.getJobManager().find(PluginActivator.JOB_FAMILY_NAME);
-            for (int i = 0; i < jobs.length; i++) {
-                SaveFileSnapshotJob job = (SaveFileSnapshotJob) jobs[i];
-                if (job.isForInput((IFileEditorInput) persistable)) {
-                    job.complete();
-                }
+        Job[] jobs = Platform.getJobManager().find(PluginActivator.JOB_FAMILY_NAME);
+        for (int i = 0; i < jobs.length; i++) {
+            SaveFileSnapshotJob job = (SaveFileSnapshotJob) jobs[i];
+            if (job.isForInput((IEditorPart) part)) {
+                job.complete();
             }
         }
     }

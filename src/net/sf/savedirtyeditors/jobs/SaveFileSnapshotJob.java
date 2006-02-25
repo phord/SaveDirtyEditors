@@ -13,16 +13,18 @@ package net.sf.savedirtyeditors.jobs;
 import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.actions.DeleteFileSnapshotAction;
 import net.sf.savedirtyeditors.actions.SaveFileSnapshotAction;
+import net.sf.savedirtyeditors.utils.Messages;
+import net.sf.savedirtyeditors.utils.ResourceUtils;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.osgi.framework.Bundle;
 
 /**
@@ -30,22 +32,22 @@ import org.osgi.framework.Bundle;
  * {@link DeleteFileSnapshotAction}. This belongs to the Job family defined by {@link PluginActivator#JOB_FAMILY_NAME}.
  */
 public final class SaveFileSnapshotJob extends Job {
-    private static final long RESCHEDULE_DELAY = 300000;// 5 minutes
+    private static final long DEFAULT_RESCHEDULE_DELAY = 300000;// 5 mins
 
     private final Bundle systemBundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
 
-    private final IFileEditorInput fileEditorInput;
+    private final IEditorPart editorPart;
     private boolean completed = false;
 
     /**
      * Constructor for SaveFileSnapshotJob.
      * 
-     * @param fileEditorInput
-     *            The non-null {@link IFileEditorInput} for which the scheduled tasks need to be run.
+     * @param editorPart
+     *            The non-null {@link IEditorPart} for which the scheduled tasks need to be run.
      */
-    public SaveFileSnapshotJob(final IFileEditorInput fileEditorInput) {
-        super(fileEditorInput.getToolTipText());
-        this.fileEditorInput = fileEditorInput;
+    public SaveFileSnapshotJob(final IEditorPart editorPart) {
+        super(ResourceUtils.getFullPathAsString(editorPart));
+        this.editorPart = editorPart;
         setSystem(true);
         setPriority(SHORT);
         schedule();
@@ -61,16 +63,15 @@ public final class SaveFileSnapshotJob extends Job {
     }
 
     /**
-     * Returns true if the specified {@link IFileEditorInput} is the <b>same</b> as the one that this Job was created
-     * for.
+     * Returns true if the specified {@link IEditorPart} is the <b>same</b> as the one that this Job was created for.
      * 
-     * @param fileEditorInput
-     *            The IFileEditorInput that needs to be tested
-     * @return True if the <code>fileEditorInput</code> is the same exact instance as the one that this Job was
-     *         created for; false otherwise
+     * @param editorPart
+     *            The IEditorPart that needs to be tested
+     * @return True if the <code>editorPart</code> is the same exact instance as the one that this Job was created
+     *         for; false otherwise
      */
-    public boolean isForInput(final IFileEditorInput fileEditorInput) {
-        return this.fileEditorInput == fileEditorInput;
+    public boolean isForInput(final IEditorPart editorPart) {
+        return this.editorPart == editorPart;
     }
 
     /**
@@ -97,34 +98,29 @@ public final class SaveFileSnapshotJob extends Job {
         }
 
         IJobManager jobManager = Platform.getJobManager();
-        IFile underlyingFile = fileEditorInput.getFile();
+        ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
         try {
-            jobManager.beginRule(underlyingFile, monitor);
-            // HACKTAG: for 3.1 compatibility - cant use SafeRunner.run(ISafeRunnable)
+            jobManager.beginRule(rule, monitor);
             // Do the actual save by delegating to an action
-            run(new SaveFileSnapshotAction(fileEditorInput));
+            ResourceUtils.run(new SaveFileSnapshotAction(editorPart));
         } finally {
-            jobManager.endRule(underlyingFile);
+            jobManager.endRule(rule);
         }
-        schedule(RESCHEDULE_DELAY);
+        schedule(DEFAULT_RESCHEDULE_DELAY);
         return Status.OK_STATUS;
     }
 
     /**
      * Called when this Job needs to be shutdown. This method will run the {@link DeleteFileSnapshotAction} for the
-     * <code>fileEditorInput</code> from this Job and then stop itself from being scheduled/run any more.
+     * <code>editorPart</code> from this Job and then stop itself from being scheduled/run any more.
      */
     public void complete() {
-        PluginActivator.logDebug("Completing snapshot for: " + fileEditorInput.getToolTipText()); //$NON-NLS-1$
+        PluginActivator
+                .logDebug(Messages.getString("SaveFileSnapshotJob.complete") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
         // Need to clean the temp area
-        run(new DeleteFileSnapshotAction(fileEditorInput));
+        ResourceUtils.run(new DeleteFileSnapshotAction(editorPart));
         completed = true;
         sleep();
         cancel();
-    }
-
-    private void run(final ISafeRunnable runnable) {
-        // HACKTAG: Once we move to 3.2, remove deprecation
-        Platform.run(runnable);
     }
 }

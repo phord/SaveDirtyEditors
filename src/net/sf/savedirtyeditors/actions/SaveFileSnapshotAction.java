@@ -10,32 +10,71 @@
  *******************************************************************************/
 package net.sf.savedirtyeditors.actions;
 
-import net.sf.savedirtyeditors.PluginActivator;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
-import org.eclipse.ui.IFileEditorInput;
+import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.utils.Messages;
+import net.sf.savedirtyeditors.utils.ResourceUtils;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ui.IEditorPart;
 
 /**
- * A <code>SaveFileSnapshotAction</code> will save the {@link IFileEditorInput} that it is associated with into a
- * temporary area. If there is already a file for the same {@link IFileEditorInput} in the temp area, this will
- * overwrite the contents of that file with the contents of the {@link IFileEditorInput}
+ * A <code>SaveFileSnapshotAction</code> will save the {@link IEditorPart} that it is associated with into a temporary
+ * area. If there is already a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents
+ * of that file with the contents of the {@link IEditorPart}
  */
 public final class SaveFileSnapshotAction extends BaseFileSnapshotAction {
     /**
      * Constructor for SaveFileSnapshotAction.
      * 
-     * @param fileEditorInput
-     *            The non-null {@link IFileEditorInput} that this action performs the operation on.
+     * @param editorPart
+     *            The non-null {@link IEditorPart} that this action performs the operation on.
      */
-    public SaveFileSnapshotAction(final IFileEditorInput fileEditorInput) {
-        super(fileEditorInput);
+    public SaveFileSnapshotAction(final IEditorPart editorPart) {
+        super(editorPart);
     }
 
     /**
-     * Updates the snapshot for the <code>fileEditorInput</code> with the latest contents when this method is called.
+     * Updates the snapshot for the <code>editorPart</code> with the latest contents when this method is called.
      * Calling this method repeatedly will just keep overwriting the snapshot.
      */
     public void run() {
-        PluginActivator.logDebug(buildLog("Save")); //$NON-NLS-1$
-        // vrarem: flesh this out
+        PluginActivator.logDebug(buildLog(Messages.getString("SaveFileSnapshotAction.save"))); //$NON-NLS-1$
+
+        // if the editorPart is not dirty - dont proceed any further
+        if (!editorPart.isDirty()) {
+            return;
+        }
+
+        IFile origFile = ResourceUtils.getFile(editorPart);
+        IFile snapshotFile = getSnapshotFile();
+        InputStream inputStream = null;
+        String dirtyContents = ResourceUtils.getDirtyContents(editorPart);
+        try {
+            inputStream = new ByteArrayInputStream(dirtyContents.getBytes(origFile.getCharset()));
+            if (!snapshotFile.exists()) {
+                snapshotFile.create(inputStream, true, new NullProgressMonitor());
+            } else {
+                snapshotFile.setContents(inputStream, true, false, new NullProgressMonitor());
+            }
+        } catch (CoreException exc) {
+            PluginActivator.logError(exc);
+        } catch (UnsupportedEncodingException exc) {
+            PluginActivator.logError(exc);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException exc) {
+                    PluginActivator.logError(exc);
+                }
+            }
+        }
     }
 }

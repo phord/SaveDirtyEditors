@@ -11,6 +11,7 @@
 package net.sf.savedirtyeditors.listeners;
 
 import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.utils.Messages;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
@@ -39,7 +40,7 @@ public final class WindowListener implements IWindowListener {
      *            The {@link IWorkbenchWindow} that was opened
      */
     public void windowOpened(final IWorkbenchWindow window) {
-        PluginActivator.logDebug("Monitoring window"); //$NON-NLS-1$
+        PluginActivator.logDebug(Messages.getString("WindowListener.window.monitoring")); //$NON-NLS-1$
         window.getPartService().addPartListener(partListener);
     }
 
@@ -51,7 +52,7 @@ public final class WindowListener implements IWindowListener {
      *            The {@link IWorkbenchWindow} that was closed
      */
     public void windowClosed(final IWorkbenchWindow window) {
-        PluginActivator.logDebug("Unmonitoring window"); //$NON-NLS-1$
+        PluginActivator.logDebug(Messages.getString("WindowListener.window.unmonitoring")); //$NON-NLS-1$
         window.getPartService().removePartListener(partListener);
     }
 

@@ -1,3 +1,20 @@
+Changes in ver 0.0.3
+********************
+[Feature] 
+	o) Saves contents of dirty editors on a time-based schedule. Currently this
+	   happens every 5 minutes and cannot be set using preferences - next version
+	   will have a Preference page where this can be modified.
+[Misc] 
+    o) Totally revamped the inner workings.
+    o) Now creates temporary files in the workspace at the same location as the
+       file being edited - just with a '~' in front of the original file name so
+       as to differentiate the two. This snapshot file will be removed when the
+       editor or the workbench window is closed (which will save the dirty file).
+       If Eclipse crashes, and the workbench is closed without following the normal
+       routine, the snapshot file will be left behind. Currently the user will have
+       to manually reconcile the differences.
+    o) Externalized messages into properties file.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.2
 ********************
 [Misc] 

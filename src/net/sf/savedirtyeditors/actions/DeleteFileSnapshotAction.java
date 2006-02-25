@@ -11,34 +11,45 @@
 package net.sf.savedirtyeditors.actions;
 
 import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.utils.Messages;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ui.IEditorPart;
 
 /**
- * A <code>DeleteFileSnapshotAction</code> will delete the {@link IFileEditorInput} that it is associated with from a
- * temporary area if there is a file for the same {@link IFileEditorInput} in the temp area, this will overwrite the
- * contents of that file with the contents of the {@link IFileEditorInput}
+ * A <code>DeleteFileSnapshotAction</code> will delete the {@link IEditorPart} that it is associated with from a
+ * temporary area if there is a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents
+ * of that file with the contents of the {@link IEditorPart}
  */
 public final class DeleteFileSnapshotAction extends BaseFileSnapshotAction {
     /**
      * Constructor for DeleteFileSnapshotAction.
      * 
-     * @param fileEditorInput
-     *            The non-null {@link IFileEditorInput} that this action performs the operation on.
+     * @param editorPart
+     *            The non-null {@link IEditorPart} that this action performs the operation on.
      */
-    public DeleteFileSnapshotAction(final IFileEditorInput fileEditorInput) {
-        super(fileEditorInput);
+    public DeleteFileSnapshotAction(final IEditorPart editorPart) {
+        super(editorPart);
     }
 
     /**
-     * Deletes the snapshot that was created by the {@link SaveFileSnapshotAction} for the <code>fileEditorInput</code>.
+     * Deletes the snapshot that was created by the {@link SaveFileSnapshotAction} for the <code>editorPart</code>.
      * 
      * @see ISafeRunnable#run
      */
     public void run() {
-        PluginActivator.logDebug(buildLog("Clean")); //$NON-NLS-1$
-        // todo: flesh this out
-        // ONLY delete if the timestamp of the underlying file is >= the timestamp of the snapshot
+        PluginActivator.logDebug(buildLog(Messages.getString("DeleteFileSnapshotAction.delete"))); //$NON-NLS-1$
+
+        // NOTE: dont verify if the editorPart is dirty - it might have been dirty at some point, but subsequently
+        // saved, and the snapshot file would still be present since this is the only place where we delete the snapshot
+
+        try {
+            // TODO: ONLY delete if the timestamp of the original file is >= the timestamp of the snapshot
+            getSnapshotFile().delete(true, new NullProgressMonitor());
+        } catch (CoreException exc) {
+            PluginActivator.logError(exc);
+        }
     }
 }
