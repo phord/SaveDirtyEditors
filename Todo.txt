@@ -1,11 +1,10 @@
 Functionality:
 --------------
 1) Add preference page to set save interval.
-2) Get the time interval for saving dirty editors from preferences.
-3) Save into the metadata area (thanks to Douglas Pollock for suggesting this: 
+2) Save into the metadata area (thanks to Douglas Pollock for suggesting this: 
    https://bugs.eclipse.org/bugs/show_bug.cgi?id=34076#c14)
    Currently, we save into the same directory as the original file - with a '~' before the name.
-4) In case of abnormal shutdown (ie the snapshot file is still present), on next startup,
+3) In case of abnormal shutdown (ie the snapshot file is still present), on next startup,
    resolve conflicts by bringing up a compare window.
 
 Support:
