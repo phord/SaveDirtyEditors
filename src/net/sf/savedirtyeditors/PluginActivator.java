@@ -145,7 +145,6 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      *            The text to be logged
      */
     public static void logDebug(String message) {
-        System.out.println("message: " + message); // vrarem //$NON-NLS-1$
         // HACKTAG: Dont know why - but we need to do a null check (for 3.1)
         if (getDefault() != null && getDefault().isDebugging()) {
             log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message, null));
