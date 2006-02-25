@@ -9,7 +9,6 @@ Functionality:
 
 Support:
 --------
-1) Host project.
-2) Create help/usage docs.
-3) Create home page.
-4) Create update site.
+1) Create help/usage docs.
+2) Create home page.
+3) Create update site.
