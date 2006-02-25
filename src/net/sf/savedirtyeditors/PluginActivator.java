@@ -69,6 +69,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
     public void earlyStartup() {
         // add a window listener to the current workbench - for future windows opened from this
         PlatformUI.getWorkbench().addWindowListener(windowListener);
+
         // add a part listener to the parts in the current workbench
         IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
         for (int i = 0; i < workbenchWindows.length; i++) {
@@ -98,7 +99,15 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      */
     public void stop(BundleContext context) throws Exception {
         try {
+            // remove the part listener from the parts in the current workbench
+            IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
+            for (int i = 0; i < workbenchWindows.length; i++) {
+                workbenchWindows[i].getPartService().removePartListener(partListener);
+            }
+
+            // remove the window listener from the current workbench
             PlatformUI.getWorkbench().removeWindowListener(windowListener);
+
             windowListener = null;
             partListener = null;
             plugin = null;
