@@ -21,7 +21,19 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IWorkbenchPart;
 
+/**
+ * An implementation of {@link IPartListener} that is used to start and stop {@link SaveFileSnapshotJob} instances for
+ * each {@link IEditorPart} that was opened/closed.
+ */
 public final class PartListener implements IPartListener {
+    /**
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, and its input is a
+     * {@link IFileEditorInput}, then it creates a new instance of {@link SaveFileSnapshotJob} for that specific
+     * {@link IFileEditorInput}
+     * 
+     * @param part
+     *            The {@link IWorkbenchPart} that was opened
+     */
     public void partOpened(final IWorkbenchPart part) {
         // if the part is not an EditorPart - just quit
         if (!canProcess(part)) {
@@ -38,6 +50,14 @@ public final class PartListener implements IPartListener {
         }
     }
 
+    /**
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, and its input is a
+     * {@link IFileEditorInput}, then it finds the specific {@link Job} associated with that {@link IFileEditorInput}
+     * and marks it as completed.
+     * 
+     * @param part
+     *            The {@link IWorkbenchPart} that was closed
+     */
     public void partClosed(final IWorkbenchPart part) {
         // if the part is not an EditorPart - just quit
         if (!canProcess(part)) {
