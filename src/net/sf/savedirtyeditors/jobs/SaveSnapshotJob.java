@@ -11,6 +11,7 @@
 package net.sf.savedirtyeditors.jobs;
 
 import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.PluginConstants;
 import net.sf.savedirtyeditors.actions.DeleteSnapshotAction;
 import net.sf.savedirtyeditors.actions.ReconcileSnapshotAction;
 import net.sf.savedirtyeditors.actions.SaveSnapshotAction;
@@ -30,11 +31,9 @@ import org.osgi.framework.Bundle;
 
 /**
  * A custom implementation of {@link Job} to schedule either the {@link SaveSnapshotAction} or the
- * {@link DeleteSnapshotAction}. This belongs to the Job family defined by {@link PluginActivator#JOB_FAMILY_NAME}.
+ * {@link DeleteSnapshotAction}. This belongs to the Job family defined by {@link PluginConstants#JOB_FAMILY_NAME}.
  */
 public final class SaveSnapshotJob extends Job {
-    private static final long DEFAULT_RESCHEDULE_DELAY = 300000;// 5 mins
-
     private final Bundle systemBundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
 
     private final IEditorPart editorPart;
@@ -56,12 +55,12 @@ public final class SaveSnapshotJob extends Job {
     }
 
     /**
-     * Returns true if family is the same as defined by {@link PluginActivator#JOB_FAMILY_NAME}
+     * Returns true if family is the same as defined by {@link PluginConstants#JOB_FAMILY_NAME}
      * 
      * @see Job#belongsTo(Object)
      */
     public boolean belongsTo(final Object family) {
-        return PluginActivator.JOB_FAMILY_NAME.equals(family);
+        return PluginConstants.JOB_FAMILY_NAME.equals(family);
     }
 
     /**
@@ -118,7 +117,7 @@ public final class SaveSnapshotJob extends Job {
         } finally {
             jobManager.endRule(rule);
         }
-        schedule(DEFAULT_RESCHEDULE_DELAY);
+        schedule(PluginActivator.getLongPreference(PluginConstants.KEY_RESCHEDULE_DELAY));
         return Status.OK_STATUS;
     }
 

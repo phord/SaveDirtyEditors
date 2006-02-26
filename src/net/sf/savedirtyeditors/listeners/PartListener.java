@@ -11,6 +11,7 @@
 package net.sf.savedirtyeditors.listeners;
 
 import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.PluginConstants;
 import net.sf.savedirtyeditors.jobs.SaveSnapshotJob;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
@@ -61,7 +62,7 @@ public final class PartListener implements IPartListener {
         PluginActivator.logDebug(Messages.getString("PartListener.part.unmonitoring")); //$NON-NLS-1$
 
         // Remove job
-        Job[] jobs = Platform.getJobManager().find(PluginActivator.JOB_FAMILY_NAME);
+        Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
         for (int i = 0; i < jobs.length; i++) {
             SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
             if (job.isForInput((IEditorPart) part)) {

@@ -28,18 +28,6 @@ import org.osgi.framework.BundleContext;
  */
 public class PluginActivator extends AbstractUIPlugin implements IStartup {
     /**
-     * The id of the plugin (as defined in the plugin.xml or manifest.mf file)
-     */
-    private static final String PLUGIN_ID = "SaveDirtyEditors"; //$NON-NLS-1$
-
-    /**
-     * The name of the family to which all jobs created by this plugin belong to.
-     */
-    public static final String JOB_FAMILY_NAME = PLUGIN_ID + ":Jobs"; //$NON-NLS-1$
-
-    private static final String ERROR = "Error"; //$NON-NLS-1$
-
-    /**
      * A flag used by the plugin to determine whether to log info messages.
      */
     private static boolean INFO = false;
@@ -86,20 +74,11 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
     }
 
     /**
-     * This method is called upon plug-in activation
-     * 
-     * @see AbstractUIPlugin#start(BundleContext)
-     */
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-    }
-
-    /**
      * This method is called when the plug-in is stopped
      * 
      * @see AbstractUIPlugin#stop(BundleContext)
      */
-    public void stop(BundleContext context) throws Exception {
+    public void stop(final BundleContext context) throws Exception {
         try {
             // remove the part listener from the parts in the current workbench
             IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
@@ -123,8 +102,16 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * 
      * @return the shared instance.
      */
-    public static PluginActivator getDefault() {
+    public static final PluginActivator getDefault() {
         return plugin;
+    }
+
+    public static final long getLongPreference(String key) {
+        return getDefault().getPreferenceStore().getLong(key);
+    }
+
+    public static final String getStringPreference(String key) {
+        return getDefault().getPreferenceStore().getString(key);
     }
 
     /**
@@ -133,8 +120,8 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * @param throwable
      *            The {@link Throwable} to log
      */
-    public static void logError(Throwable throwable) {
-        log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, ERROR, throwable));
+    public static final void logError(final Throwable throwable) {
+        log(new Status(IStatus.ERROR, PluginConstants.PLUGIN_ID, IStatus.ERROR, PluginConstants.ERROR, throwable));
     }
 
     /**
@@ -143,9 +130,9 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * @param message
      *            The text to be logged
      */
-    public static void logInfo(String message) {
+    public static final void logInfo(final String message) {
         if (INFO) {
-            log(new Status(IStatus.INFO, PLUGIN_ID, IStatus.INFO, message, null));
+            log(new Status(IStatus.INFO, PluginConstants.PLUGIN_ID, IStatus.INFO, message, null));
         }
     }
 
@@ -155,10 +142,10 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * @param message
      *            The text to be logged
      */
-    public static void logDebug(String message) {
+    public static final void logDebug(final String message) {
         // HACKTAG: Dont know why - but we need to do a null check (for 3.1)
         if (getDefault() != null && getDefault().isDebugging()) {
-            log(new Status(IStatus.WARNING, PLUGIN_ID, IStatus.WARNING, message, null));
+            log(new Status(IStatus.WARNING, PluginConstants.PLUGIN_ID, IStatus.WARNING, message, null));
         }
     }
 
@@ -167,7 +154,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * 
      * @param status
      */
-    private static void log(IStatus status) {
+    private static final void log(final IStatus status) {
         getDefault().getLog().log(status);
     }
 }

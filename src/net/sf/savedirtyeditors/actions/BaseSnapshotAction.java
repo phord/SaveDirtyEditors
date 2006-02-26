@@ -11,6 +11,7 @@
 package net.sf.savedirtyeditors.actions;
 
 import net.sf.savedirtyeditors.PluginActivator;
+import net.sf.savedirtyeditors.PluginConstants;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
 
@@ -57,14 +58,14 @@ abstract class BaseSnapshotAction implements ISafeRunnable {
      * <code>editorPart</code>
      * 
      * @return A reference to the IFile (at the same physical folder location as the original file, but with the name
-     *         having a preceding '~'
+     *         surrounded with the user-defined preferences for the snapshot name prefix and suffix.
      */
     protected final IFile getSnapshotFile() {
         IFile origFile = getOriginalFile();
         IPath origFileFolder = origFile.getParent().getFullPath();
         IPath snapshotPath = origFileFolder.addTrailingSeparator().append(
-                Messages.getString("BaseSnapshotAction.snapshot.name.prefix") + origFile.getName() //$NON-NLS-1$
-                        + Messages.getString("BaseSnapshotAction.snapshot.name.suffix")); //$NON-NLS-1$
+                PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_PREFIX) + origFile.getName()
+                        + PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_SUFFIX));
         return ResourcesPlugin.getWorkspace().getRoot().getFile(snapshotPath);
     }
 

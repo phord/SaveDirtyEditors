@@ -4,5 +4,9 @@
    <extension
          point="org.eclipse.ui.startup">
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="net.sf.savedirtyeditors.preferences.PreferenceInitializer"/>
+   </extension>
 
 </plugin>
