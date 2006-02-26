@@ -4,8 +4,6 @@ Functionality:
 2) Save into the metadata area (thanks to Douglas Pollock for suggesting this: 
    https://bugs.eclipse.org/bugs/show_bug.cgi?id=34076#c14)
    Currently, we save into the same directory as the original file - with a '~' before the name.
-3) In case of abnormal shutdown (ie the snapshot file is still present), on next startup,
-   resolve conflicts by bringing up a compare window.
 
 Support:
 --------
