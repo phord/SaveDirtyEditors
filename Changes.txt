@@ -5,6 +5,14 @@ Changes in ver 0.0.5
 	   abnormally, this shows a confirmation popup to determine whether the user wants to
 	   compare the differences and then proceeds to show the compare dialog if the user
 	   accepted.
+[Misc]
+	o) Changed the format of the snapshot file to be adjustable by user preference - since 
+	   .java files will some extension appended at the end so that the compiler does not 
+	   complain.
+[Note]
+	o) Since the snapshots are stored in the same project directories as the originals, 
+	   the users of this plugin will have to manually filter out the snapshot files from 
+	   the navigator, package explorer or any other views that they normally use.
 ------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.4
 ********************
