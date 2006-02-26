@@ -70,12 +70,14 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
         // add a window listener to the current workbench - for future windows opened from this
         PlatformUI.getWorkbench().addWindowListener(windowListener);
 
-        // add a part listener to the parts in the current workbench
+        // add a part listener to the parts in each workbench window in the current workbench
         IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
         for (int i = 0; i < workbenchWindows.length; i++) {
             IWorkbenchWindow workbenchWindow = workbenchWindows[i];
             workbenchWindow.getPartService().addPartListener(partListener);
             // iff there's already an active editor - fire an event for part opened
+            // NOTE: We dont need to recurse through all open editors, since the partOpened event will be fired when
+            // each editor gets focus
             IEditorPart activeEditor = workbenchWindow.getActivePage().getActiveEditor();
             if (activeEditor != null) {
                 partListener.partOpened(activeEditor);
