@@ -13,6 +13,7 @@ package net.sf.savedirtyeditors.listeners;
 import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.jobs.SaveFileSnapshotJob;
 import net.sf.savedirtyeditors.utils.Messages;
+import net.sf.savedirtyeditors.utils.ResourceUtils;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
@@ -70,7 +71,7 @@ public final class PartListener implements IPartListener {
     }
 
     private boolean canProcess(final IWorkbenchPart part) {
-        return part instanceof IEditorPart;
+        return part instanceof IEditorPart && ResourceUtils.getFile((IEditorPart) part) != null;
     }
 
     /**

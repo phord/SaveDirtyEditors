@@ -1,3 +1,8 @@
+Changes in ver 0.0.4
+********************
+[Misc] 
+	o) Fixed a bug wherein editors for class files (with attached sources) would fail.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.3
 ********************
 [Feature] 
