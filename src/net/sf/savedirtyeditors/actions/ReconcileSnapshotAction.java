@@ -12,14 +12,21 @@ package net.sf.savedirtyeditors.actions;
 
 import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.utils.Messages;
+import net.sf.savedirtyeditors.utils.ResourceUtils;
 
+import org.eclipse.compare.internal.CompareAction;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * A <code>ReconcileSnapshotAction</code> will be called when the wo save the {@link IEditorPart} that it is
@@ -66,6 +73,19 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
 
         // even if the user had decided to rollback the changes, the only way we can come here is if Eclipse crashed and
         // so the snapshot file is still present
-        // TODO: Flesh this out
+        final CompareAction compareAction = new CompareAction();
+        compareAction.selectionChanged(new Action() {
+        }, new StructuredSelection(new Object[] { getOriginalFile(), snapshotFile }));
+        PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+            public void run() {
+                boolean confirmation = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(), Messages
+                        .getString("ReconcileSnapshotAction.reconcile.prompt.title"), //$NON-NLS-1$
+                        Messages.getString("ReconcileSnapshotAction.reconcile.prompt.message") //$NON-NLS-1$
+                                + ResourceUtils.getFullPathAsString(editorPart));
+                if (confirmation) {
+                    compareAction.run((Action) null);
+                }
+            }
+        });
     }
 }
