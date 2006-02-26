@@ -1,3 +1,11 @@
+Changes in ver 0.0.5
+********************
+[Feature]
+	o) Added Reconcile action: If its detected that the previous run of Eclipse shutdown
+	   abnormally, this shows a confirmation popup to determine whether the user wants to
+	   compare the differences and then proceeds to show the compare dialog if the user
+	   accepted.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.4
 ********************
 [Misc] 
@@ -5,7 +13,7 @@ Changes in ver 0.0.4
 ------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.3
 ********************
-[Feature] 
+[Feature]
 	o) Saves contents of dirty editors on a time-based schedule. Currently this
 	   happens every 5 minutes and cannot be set using preferences - next version
 	   will have a Preference page where this can be modified.
