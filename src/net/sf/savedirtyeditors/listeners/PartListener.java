@@ -11,7 +11,7 @@
 package net.sf.savedirtyeditors.listeners;
 
 import net.sf.savedirtyeditors.PluginActivator;
-import net.sf.savedirtyeditors.jobs.SaveFileSnapshotJob;
+import net.sf.savedirtyeditors.jobs.SaveSnapshotJob;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
 
@@ -22,13 +22,13 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * An implementation of {@link IPartListener} that is used to start and stop {@link SaveFileSnapshotJob} instances for
- * each {@link IEditorPart} that was opened/closed.
+ * An implementation of {@link IPartListener} that is used to start and stop {@link SaveSnapshotJob} instances for each
+ * {@link IEditorPart} that was opened/closed.
  */
 public final class PartListener implements IPartListener {
     /**
      * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, then it creates a new instance of
-     * {@link SaveFileSnapshotJob} for that specific {@link IEditorPart}
+     * {@link SaveSnapshotJob} for that specific {@link IEditorPart}
      * 
      * @param part
      *            The {@link IWorkbenchPart} that was opened
@@ -42,7 +42,7 @@ public final class PartListener implements IPartListener {
         PluginActivator.logDebug(Messages.getString("PartListener.part.monitoring")); //$NON-NLS-1$
 
         // create a scheduled job which will in turn call the save action at specified time intervals
-        new SaveFileSnapshotJob((IEditorPart) part);
+        new SaveSnapshotJob((IEditorPart) part);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class PartListener implements IPartListener {
         // Remove job
         Job[] jobs = Platform.getJobManager().find(PluginActivator.JOB_FAMILY_NAME);
         for (int i = 0; i < jobs.length; i++) {
-            SaveFileSnapshotJob job = (SaveFileSnapshotJob) jobs[i];
+            SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
             if (job.isForInput((IEditorPart) part)) {
                 job.complete();
             }

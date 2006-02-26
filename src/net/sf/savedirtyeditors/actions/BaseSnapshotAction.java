@@ -22,40 +22,48 @@ import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * A base implementation of a snapshot action - providing common functionality for both the
- * {@link SaveFileSnapshotAction} and {@link DeleteFileSnapshotAction} concrete implementations. This class should not
- * be visible outside this package.
+ * A base implementation of a snapshot action - providing common functionality for both the {@link SaveSnapshotAction}
+ * and {@link DeleteSnapshotAction} concrete implementations. This class should not be visible outside this package.
  */
-abstract class BaseFileSnapshotAction implements ISafeRunnable {
+abstract class BaseSnapshotAction implements ISafeRunnable {
     /**
      * The file editor input that this action performs the operation on.
      */
     protected final IEditorPart editorPart;
 
     /**
-     * Constructor for BaseFileSnapshotAction. Should not be visible from outside this package - so no qualifier
+     * Constructor for BaseSnapshotAction. Should not be visible from outside this package - so no qualifier
      * 
      * @param editorPart
      *            The non-null {@link IEditorPart} that this action performs the operation on.
      */
-    BaseFileSnapshotAction(final IEditorPart editorPart) {
+    BaseSnapshotAction(final IEditorPart editorPart) {
         super();
-        Assert.isNotNull(editorPart, Messages.getString("BaseFileSnapshotAction.null_editorPart")); //$NON-NLS-1$
+        Assert.isNotNull(editorPart, Messages.getString("BaseSnapshotAction.null_editorPart")); //$NON-NLS-1$
         this.editorPart = editorPart;
     }
 
     /**
+     * Common place to retrieve the underlying {@link IFile} from the <code>editorPart</code>
+     * 
+     * @return The IFile under the editorPart
+     */
+    protected final IFile getOriginalFile() {
+        return ResourceUtils.getFile(editorPart);
+    }
+
+    /**
      * Common place to create the snapshot {@link IFile} based on the underlying {@link IFile} from the
-     * <code>editorPath</code>
+     * <code>editorPart</code>
      * 
      * @return A reference to the IFile (at the same physical folder location as the original file, but with the name
      *         having a preceding '~'
      */
     protected final IFile getSnapshotFile() {
-        IFile origFile = ResourceUtils.getFile(editorPart);
+        IFile origFile = getOriginalFile();
         IPath origFileFolder = origFile.getParent().getFullPath();
         IPath snapshotPath = origFileFolder.addTrailingSeparator().append(
-                Messages.getString("BaseFileSnapshotAction.snapshot.name.prefix") + origFile.getName()); //$NON-NLS-1$
+                Messages.getString("BaseSnapshotAction.snapshot.name.prefix") + origFile.getName()); //$NON-NLS-1$
         return ResourcesPlugin.getWorkspace().getRoot().getFile(snapshotPath);
     }
 

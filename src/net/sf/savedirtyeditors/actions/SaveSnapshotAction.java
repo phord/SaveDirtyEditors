@@ -25,18 +25,18 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * A <code>SaveFileSnapshotAction</code> will save the {@link IEditorPart} that it is associated with into a temporary
+ * A <code>SaveSnapshotAction</code> will save the {@link IEditorPart} that it is associated with into a temporary
  * area. If there is already a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents
  * of that file with the contents of the {@link IEditorPart}
  */
-public final class SaveFileSnapshotAction extends BaseFileSnapshotAction {
+public final class SaveSnapshotAction extends BaseSnapshotAction {
     /**
-     * Constructor for SaveFileSnapshotAction.
+     * Constructor for SaveSnapshotAction.
      * 
      * @param editorPart
      *            The non-null {@link IEditorPart} that this action performs the operation on.
      */
-    public SaveFileSnapshotAction(final IEditorPart editorPart) {
+    public SaveSnapshotAction(final IEditorPart editorPart) {
         super(editorPart);
     }
 
@@ -45,14 +45,14 @@ public final class SaveFileSnapshotAction extends BaseFileSnapshotAction {
      * Calling this method repeatedly will just keep overwriting the snapshot.
      */
     public void run() {
-        PluginActivator.logDebug(buildLog(Messages.getString("SaveFileSnapshotAction.save"))); //$NON-NLS-1$
+        PluginActivator.logDebug(buildLog(Messages.getString("SaveSnapshotAction.save"))); //$NON-NLS-1$
 
         // if the editorPart is not dirty - dont proceed any further
         if (!editorPart.isDirty()) {
             return;
         }
 
-        IFile origFile = ResourceUtils.getFile(editorPart);
+        IFile origFile = getOriginalFile();
         IFile snapshotFile = getSnapshotFile();
         InputStream inputStream = null;
         String dirtyContents = ResourceUtils.getDirtyContents(editorPart);

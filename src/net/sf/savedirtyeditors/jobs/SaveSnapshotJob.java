@@ -11,8 +11,8 @@
 package net.sf.savedirtyeditors.jobs;
 
 import net.sf.savedirtyeditors.PluginActivator;
-import net.sf.savedirtyeditors.actions.DeleteFileSnapshotAction;
-import net.sf.savedirtyeditors.actions.SaveFileSnapshotAction;
+import net.sf.savedirtyeditors.actions.DeleteSnapshotAction;
+import net.sf.savedirtyeditors.actions.SaveSnapshotAction;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
 
@@ -28,10 +28,10 @@ import org.eclipse.ui.IEditorPart;
 import org.osgi.framework.Bundle;
 
 /**
- * A custom implementation of {@link Job} to schedule either the {@link SaveFileSnapshotAction} or the
- * {@link DeleteFileSnapshotAction}. This belongs to the Job family defined by {@link PluginActivator#JOB_FAMILY_NAME}.
+ * A custom implementation of {@link Job} to schedule either the {@link SaveSnapshotAction} or the
+ * {@link DeleteSnapshotAction}. This belongs to the Job family defined by {@link PluginActivator#JOB_FAMILY_NAME}.
  */
-public final class SaveFileSnapshotJob extends Job {
+public final class SaveSnapshotJob extends Job {
     private static final long DEFAULT_RESCHEDULE_DELAY = 300000;// 5 mins
 
     private final Bundle systemBundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
@@ -40,12 +40,12 @@ public final class SaveFileSnapshotJob extends Job {
     private boolean completed = false;
 
     /**
-     * Constructor for SaveFileSnapshotJob.
+     * Constructor for SaveSnapshotJob.
      * 
      * @param editorPart
      *            The non-null {@link IEditorPart} for which the scheduled tasks need to be run.
      */
-    public SaveFileSnapshotJob(final IEditorPart editorPart) {
+    public SaveSnapshotJob(final IEditorPart editorPart) {
         super(ResourceUtils.getFullPathAsString(editorPart));
         this.editorPart = editorPart;
         setSystem(true);
@@ -102,7 +102,7 @@ public final class SaveFileSnapshotJob extends Job {
         try {
             jobManager.beginRule(rule, monitor);
             // Do the actual save by delegating to an action
-            ResourceUtils.run(new SaveFileSnapshotAction(editorPart));
+            ResourceUtils.run(new SaveSnapshotAction(editorPart));
         } finally {
             jobManager.endRule(rule);
         }
@@ -111,14 +111,14 @@ public final class SaveFileSnapshotJob extends Job {
     }
 
     /**
-     * Called when this Job needs to be shutdown. This method will run the {@link DeleteFileSnapshotAction} for the
+     * Called when this Job needs to be shutdown. This method will run the {@link DeleteSnapshotAction} for the
      * <code>editorPart</code> from this Job and then stop itself from being scheduled/run any more.
      */
     public void complete() {
         PluginActivator
-                .logDebug(Messages.getString("SaveFileSnapshotJob.complete") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
+                .logDebug(Messages.getString("SaveSnapshotJob.complete") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
         // Need to clean the temp area
-        ResourceUtils.run(new DeleteFileSnapshotAction(editorPart));
+        ResourceUtils.run(new DeleteSnapshotAction(editorPart));
         completed = true;
         sleep();
         cancel();
