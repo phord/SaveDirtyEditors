@@ -15,6 +15,7 @@ import net.sf.savedirtyeditors.listeners.WindowListener;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IStartup;
@@ -106,10 +107,28 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
         return plugin;
     }
 
+    /**
+     * A utility method to retrieve the primitive long preference value for the specified key.
+     * 
+     * @param key
+     *            The key whose preference value has to be retrieved
+     * @return The long preference value from the user preferences or default (as specified by
+     *         {@link IPreferenceStore#getLong(String)}
+     * @see IPreferenceStore#getLong(String)
+     */
     public static final long getLongPreference(String key) {
         return getDefault().getPreferenceStore().getLong(key);
     }
 
+    /**
+     * A utility method to retrieve the String preference value for the specified key.
+     * 
+     * @param key
+     *            The key whose preference value has to be retrieved
+     * @return The String preference value from the user preferences or default (as specified by
+     *         {@link IPreferenceStore#getString(String)}
+     * @see IPreferenceStore#getString(String)
+     */
     public static final String getStringPreference(String key) {
         return getDefault().getPreferenceStore().getString(key);
     }
