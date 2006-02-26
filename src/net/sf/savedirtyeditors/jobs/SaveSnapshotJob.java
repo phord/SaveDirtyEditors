@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 Vijay Aravamudhan
+ * Copyright (c) 2006 Vijay Aravamudhan
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package net.sf.savedirtyeditors.jobs;
 
 import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.actions.DeleteSnapshotAction;
+import net.sf.savedirtyeditors.actions.ReconcileSnapshotAction;
 import net.sf.savedirtyeditors.actions.SaveSnapshotAction;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
@@ -38,6 +39,7 @@ public final class SaveSnapshotJob extends Job {
 
     private final IEditorPart editorPart;
     private boolean completed = false;
+    private boolean firstTime = true;
 
     /**
      * Constructor for SaveSnapshotJob.
@@ -100,14 +102,19 @@ public final class SaveSnapshotJob extends Job {
         PluginActivator
                 .logDebug(Messages.getString("SaveSnapshotJob.running") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
 
-        // TODO: Need to run the reconcile action here
-
         IJobManager jobManager = Platform.getJobManager();
         ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
         try {
             jobManager.beginRule(rule, monitor);
-            // Do the actual save by delegating to an action
-            ResourceUtils.run(new SaveSnapshotAction(editorPart));
+
+            if (firstTime) {
+                // Need to run the reconcile action
+                ResourceUtils.run(new ReconcileSnapshotAction(editorPart));
+                firstTime = false;
+            } else {
+                // Do the actual save by delegating to an action
+                ResourceUtils.run(new SaveSnapshotAction(editorPart));
+            }
         } finally {
             jobManager.endRule(rule);
         }
