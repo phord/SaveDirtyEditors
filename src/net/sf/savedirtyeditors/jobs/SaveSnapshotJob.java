@@ -46,7 +46,7 @@ public final class SaveSnapshotJob extends Job {
      *            The non-null {@link IEditorPart} for which the scheduled tasks need to be run.
      */
     public SaveSnapshotJob(final IEditorPart editorPart) {
-        super(ResourceUtils.getFullPathAsString(editorPart));
+        super(Messages.getString("SaveSnapshotJob.running") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
         this.editorPart = editorPart;
         setSystem(true);
         setPriority(SHORT);
@@ -96,6 +96,11 @@ public final class SaveSnapshotJob extends Job {
         if (systemBundle.getState() == Bundle.STOPPING) {
             return Status.OK_STATUS;
         }
+
+        PluginActivator
+                .logDebug(Messages.getString("SaveSnapshotJob.running") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
+
+        // TODO: Need to run the reconcile action here
 
         IJobManager jobManager = Platform.getJobManager();
         ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();

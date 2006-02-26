@@ -63,7 +63,8 @@ abstract class BaseSnapshotAction implements ISafeRunnable {
         IFile origFile = getOriginalFile();
         IPath origFileFolder = origFile.getParent().getFullPath();
         IPath snapshotPath = origFileFolder.addTrailingSeparator().append(
-                Messages.getString("BaseSnapshotAction.snapshot.name.prefix") + origFile.getName()); //$NON-NLS-1$
+                Messages.getString("BaseSnapshotAction.snapshot.name.prefix") + origFile.getName() //$NON-NLS-1$
+                        + Messages.getString("BaseSnapshotAction.snapshot.name.suffix")); //$NON-NLS-1$
         return ResourcesPlugin.getWorkspace().getRoot().getFile(snapshotPath);
     }
 

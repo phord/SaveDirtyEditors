@@ -14,15 +14,18 @@ import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.utils.Messages;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ui.IEditorPart;
 
 /**
  * A <code>DeleteSnapshotAction</code> will delete the {@link IEditorPart} that it is associated with from a temporary
- * area if there is a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents of that
- * file with the contents of the {@link IEditorPart}
+ * area. If there is a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents of that
+ * file with the contents of the {@link IEditorPart}.
  */
 public final class DeleteSnapshotAction extends BaseSnapshotAction {
     /**
@@ -38,11 +41,21 @@ public final class DeleteSnapshotAction extends BaseSnapshotAction {
     /**
      * Deletes the snapshot that was created by the {@link SaveSnapshotAction} for the <code>editorPart</code>.
      * 
+     * @exception CoreException
+     *                if this method fails. Reasons include:
+     *                <ul>
+     *                <li> This resource could not be deleted for some reason.</li>
+     *                <li> This resource or one of its descendents is out of sync with the local file system and
+     *                <code>force</code> is <code>false</code>.</li>
+     *                <li> Resource changes are disallowed during certain types of resource change event notification.
+     *                See <code>IResourceChangeEvent</code> for more details.</li>
+     *                </ul>
+     * @exception OperationCanceledException
+     *                if the operation is canceled. Cancelation can occur even if no progress monitor is provided.
+     * @see IResource#delete(boolean,IProgressMonitor)
      * @see ISafeRunnable#run
      */
-    public void run() {
-        PluginActivator.logDebug(buildLog(Messages.getString("DeleteSnapshotAction.delete"))); //$NON-NLS-1$
-
+    public void run() throws CoreException {
         // NOTE: dont verify if the editorPart is dirty - it might have been dirty at some point, but subsequently
         // saved, and the snapshot file would still be present since this is the only place where we delete the snapshot
 
@@ -52,13 +65,10 @@ public final class DeleteSnapshotAction extends BaseSnapshotAction {
             return;
         }
 
-        try {
-            // ONLY delete if the timestamp of the original file is >= the timestamp of the snapshot
-            if (getOriginalFile().getModificationStamp() >= snapshotFile.getModificationStamp()) {
-                snapshotFile.delete(true, new NullProgressMonitor());
-            }
-        } catch (CoreException exc) {
-            PluginActivator.logError(exc);
-        }
+        PluginActivator.logDebug(buildLog(Messages.getString("DeleteSnapshotAction.delete"))); //$NON-NLS-1$
+
+        // NOTE: dont verify the timestamps - since the snapshot might be newer if the user selected to NOT save the
+        // changes, and just closed the editor
+        snapshotFile.delete(true, new NullProgressMonitor());
     }
 }

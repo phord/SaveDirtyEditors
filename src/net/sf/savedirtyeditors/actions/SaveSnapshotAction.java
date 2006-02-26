@@ -21,7 +21,10 @@ import net.sf.savedirtyeditors.utils.ResourceUtils;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ui.IEditorPart;
 
 /**
@@ -43,8 +46,32 @@ public final class SaveSnapshotAction extends BaseSnapshotAction {
     /**
      * Updates the snapshot for the <code>editorPart</code> with the latest contents when this method is called.
      * Calling this method repeatedly will just keep overwriting the snapshot.
+     * 
+     * @exception CoreException
+     *                if this method fails. Reasons include:
+     *                <ul>
+     *                <li> The parent of this resource does not exist.</li>
+     *                <li> The project of this resource is not accessible.</li>
+     *                <li> The parent contains a resource of a different type at the same path as this resource.</li>
+     *                <li> The name of this resource is not valid (according to <code>IWorkspace.validateName</code>).</li>
+     *                <li> The corresponding location in the local file system is occupied by a directory.</li>
+     *                <li> The corresponding location in the local file system is occupied by a file and
+     *                <code>force </code> is <code>false</code>.</li>
+     *                <li> Resource changes are disallowed during certain types of resource change event notification.
+     *                See <code>IResourceChangeEvent</code> for more details.</li>
+     *                </ul>
+     *                <li> The workspace is not in sync with the corresponding location in the local file system and
+     *                <code>force </code> is <code>false</code>.</li>
+     *                <li> The file modification validator disallowed the change.</li>
+     * @exception UnsupportedEncodingException
+     *                If the named charset is not supported
+     * @exception OperationCanceledException
+     *                if the operation is canceled. Cancelation can occur even if no progress monitor is provided.
+     * @see IFile#create(InputStream, boolean, IProgressMonitor)
+     * @see IFile#setContents(InputStream, boolean, boolean, IProgressMonitor)
+     * @see ISafeRunnable#run
      */
-    public void run() {
+    public void run() throws CoreException, UnsupportedEncodingException {
         PluginActivator.logDebug(buildLog(Messages.getString("SaveSnapshotAction.save"))); //$NON-NLS-1$
 
         // if the editorPart is not dirty - dont proceed any further
@@ -63,10 +90,6 @@ public final class SaveSnapshotAction extends BaseSnapshotAction {
             } else {
                 snapshotFile.setContents(inputStream, true, false, new NullProgressMonitor());
             }
-        } catch (CoreException exc) {
-            PluginActivator.logError(exc);
-        } catch (UnsupportedEncodingException exc) {
-            PluginActivator.logError(exc);
         } finally {
             if (inputStream != null) {
                 try {
