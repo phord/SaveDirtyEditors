@@ -60,8 +60,8 @@ public final class DeleteSnapshotAction extends BaseSnapshotAction {
         // saved, and the snapshot file would still be present since this is the only place where we delete the snapshot
 
         IFile snapshotFile = getSnapshotFile();
-        // if the snapshotFile does not exist - dont proceed any further
-        if (!snapshotFile.exists()) {
+        // if the snapshotFile does not exist OR it is the same as the original file - dont proceed any further
+        if (!snapshotFile.exists() || snapshotFile.equals(getOriginalFile())) {
             return;
         }
 

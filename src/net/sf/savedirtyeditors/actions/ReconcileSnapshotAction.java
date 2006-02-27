@@ -64,8 +64,8 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
         ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 
         final IFile snapshotFile = getSnapshotFile();
-        // if the snapshotFile does not exist - dont proceed any further
-        if (!snapshotFile.exists()) {
+        // if the snapshotFile does not exist OR it is the same as the original file - dont proceed any further
+        if (!snapshotFile.exists() || snapshotFile.equals(getOriginalFile())) {
             return;
         }
 

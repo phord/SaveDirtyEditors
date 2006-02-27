@@ -9,6 +9,9 @@ Changes in ver 0.0.5
 	o) Changed the format of the snapshot file to be adjustable by user preference - since 
 	   .java files will some extension appended at the end so that the compiler does not 
 	   complain. The default prefix is an empty string and the default suffix is '.snapshot'.
+	   Some users might want to keep both the prefix and suffix as empty strings - but this
+	   preference will save to the original file and will cause problems whenever the editor 
+	   loses focus - for eg when a refactoring dialog is opened). Use this with care!
 [Note]
 	o) Since the snapshots are stored in the same project directories as the originals, 
 	   the users of this plugin will have to manually filter out the snapshot files from 
