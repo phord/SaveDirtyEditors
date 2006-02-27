@@ -4,7 +4,9 @@ Functionality:
 2) Save into the metadata area (thanks to Douglas Pollock for suggesting this: 
    https://bugs.eclipse.org/bugs/show_bug.cgi?id=34076#c14)
    Currently, we save into the same directory as the original file - with a '~' before the name.
-
+   Look at: Plugin.getStateLocation():
+   Further - how can we access files outside the workspace (in the metadata area?) IFile always returns false for
+   calls to exists()
 Support:
 --------
 1) Create help/usage docs.
