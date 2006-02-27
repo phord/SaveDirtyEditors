@@ -63,7 +63,7 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
         // for some reason the snapshot file is not being recognized as being already present unless we refresh
         ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 
-        IFile snapshotFile = getSnapshotFile();
+        final IFile snapshotFile = getSnapshotFile();
         // if the snapshotFile does not exist - dont proceed any further
         if (!snapshotFile.exists()) {
             return;
@@ -73,9 +73,6 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
 
         // even if the user had decided to rollback the changes, the only way we can come here is if Eclipse crashed and
         // so the snapshot file is still present
-        final CompareAction compareAction = new CompareAction();
-        compareAction.selectionChanged(new Action() {
-        }, new StructuredSelection(new Object[] { getOriginalFile(), snapshotFile }));
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
                 boolean confirmation = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(), Messages
@@ -83,6 +80,9 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
                         Messages.getString("ReconcileSnapshotAction.reconcile.prompt.message") //$NON-NLS-1$
                                 + ResourceUtils.getFullPathAsString(editorPart));
                 if (confirmation) {
+                    final CompareAction compareAction = new CompareAction();
+                    compareAction.selectionChanged(new Action() {
+                    }, new StructuredSelection(new Object[] { getOriginalFile(), snapshotFile }));
                     compareAction.run((Action) null);
                 }
             }
