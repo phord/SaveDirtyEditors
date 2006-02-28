@@ -34,9 +34,9 @@ public class SnapshotResourceFilters extends ViewerFilter {
         // since there's only one filter per target (registered view) - its better performance-wise to retrieve these
         // settings here - of course the caveat is that once the user changes these in the preference dialog, these will
         // need to be refreshed by closing and opening the view again
-        snapshotNamePrefix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_PREFIX).trim();
-        snapshotNameSuffix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_SUFFIX).trim();
-        shouldApply = (snapshotNamePrefix.length() > 0) || (snapshotNameSuffix.length() > 0);
+        snapshotNamePrefix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_PREFIX);
+        snapshotNameSuffix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_SUFFIX);
+        shouldApply = isNotTrivial(snapshotNamePrefix) || isNotTrivial(snapshotNameSuffix);
     }
 
     /**
@@ -58,5 +58,9 @@ public class SnapshotResourceFilters extends ViewerFilter {
             return !(name.startsWith(snapshotNamePrefix) && name.endsWith(snapshotNameSuffix));
         }
         return true;
+    }
+
+    private boolean isNotTrivial(String str) {
+        return str != null && str.trim().length() > 0;
     }
 }
