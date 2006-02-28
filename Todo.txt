@@ -7,6 +7,7 @@ Functionality:
    Look at: Plugin.getStateLocation():
    Further - how can we access files outside the workspace (in the metadata area?) IFile always returns false for
    calls to exists()
+3) Filter for navigator view is hard-coded.
 Support:
 --------
 1) Create help/usage docs.
