@@ -1,3 +1,12 @@
+Changes in ver 0.0.6
+********************
+[Note]
+	o) Since the snapshots are stored in the same project directories as the originals, 
+	   if the users change prefix and/or suffix of the snapshot file name, the users will 
+	   have to manually filter out the snapshot files from the navigator, package explorer
+	   or any other views that they normally use (by applying the named filters). If the users
+	   use the default settings - then the snapshot files are automatically filtered.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 0.0.5
 ********************
 [Feature]

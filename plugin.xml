@@ -8,5 +8,28 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="net.sf.savedirtyeditors.preferences.PreferenceInitializer"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.ide.resourceFilters">
+      <filter
+            pattern="*.snapshot"
+            selected="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.ui.javaElementFilters">
+      <filter
+            class="net.sf.savedirtyeditors.filters.SnapshotResourceFilters"
+            description="%filter.description.0"
+            enabled="true"
+            id="net.sf.savedirtyeditors.PackageExplorer.SnapshotFilters"
+            name="%filter.name.0"
+            targetId="org.eclipse.jdt.ui.PackageExplorer"/>
+      <filter
+            class="net.sf.savedirtyeditors.filters.SnapshotResourceFilters"
+            description="%filter.description.0"
+            enabled="true"
+            id="net.sf.savedirtyeditors.PackagesView.SnapshotFilters"
+            name="%filter.name.0"
+            targetId="org.eclipse.jdt.ui.PackagesView"/>
+   </extension>
 
 </plugin>
