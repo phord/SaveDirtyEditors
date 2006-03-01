@@ -62,9 +62,9 @@ public final class PartListener implements IPartListener {
         PluginActivator.logDebug(Messages.getString("PartListener.part.unmonitoring")); //$NON-NLS-1$
 
         // Remove job
-        Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
+        final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
         for (int i = 0; i < jobs.length; i++) {
-            SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
+            final SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
             if (job.isForInput((IEditorPart) part)) {
                 job.complete();
             }
@@ -72,7 +72,7 @@ public final class PartListener implements IPartListener {
     }
 
     private boolean canProcess(final IWorkbenchPart part) {
-        return part instanceof IEditorPart && ResourceUtils.getFile((IEditorPart) part) != null;
+        return (part instanceof IEditorPart) && (ResourceUtils.getFile((IEditorPart) part) != null);
     }
 
     /**

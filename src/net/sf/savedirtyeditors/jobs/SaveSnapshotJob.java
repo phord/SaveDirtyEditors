@@ -101,8 +101,8 @@ public final class SaveSnapshotJob extends Job {
         PluginActivator
                 .logDebug(Messages.getString("SaveSnapshotJob.running") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
 
-        IJobManager jobManager = Platform.getJobManager();
-        ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
+        final IJobManager jobManager = Platform.getJobManager();
+        final ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRoot();
         try {
             jobManager.beginRule(rule, monitor);
 

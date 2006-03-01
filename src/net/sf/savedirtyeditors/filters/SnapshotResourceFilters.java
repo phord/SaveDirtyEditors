@@ -36,7 +36,7 @@ public class SnapshotResourceFilters extends ViewerFilter {
         // need to be refreshed by closing and opening the view again
         snapshotNamePrefix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_PREFIX);
         snapshotNameSuffix = PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_SUFFIX);
-        shouldApply = isNotTrivial(snapshotNamePrefix) || isNotTrivial(snapshotNameSuffix);
+        shouldApply = isNonTrivial(snapshotNamePrefix) || isNonTrivial(snapshotNameSuffix);
     }
 
     /**
@@ -51,16 +51,16 @@ public class SnapshotResourceFilters extends ViewerFilter {
      * @return <code>true</code> if element is included in the filtered set, and <code>false</code> if excluded
      * @see ViewerFilter#select(Viewer, Object, Object)
      */
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
+    public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
         // if both the prefix and suffix are empty - then dont proceed (or else we will filter out every member!)
         if (shouldApply && (element instanceof IResource)) {
-            String name = ((IResource) element).getName();
+            final String name = ((IResource) element).getName();
             return !(name.startsWith(snapshotNamePrefix) && name.endsWith(snapshotNameSuffix));
         }
         return true;
     }
 
-    private boolean isNotTrivial(String str) {
-        return str != null && str.trim().length() > 0;
+    private boolean isNonTrivial(final String str) {
+        return (str != null) && (str.trim().length() > 0);
     }
 }

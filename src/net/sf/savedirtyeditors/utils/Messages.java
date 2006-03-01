@@ -34,10 +34,10 @@ public class Messages {
      *            The key whose value has to be retrieved
      * @return The value corresponding to the key; or '!key!' if not found
      */
-    public static String getString(String key) {
+    public static String getString(final String key) {
         try {
             return RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
+        } catch (final MissingResourceException e) {
             return '!' + key + '!';
         }
     }

@@ -65,7 +65,7 @@ public final class ResourceUtils {
      * @see org.eclipse.core.runtime.IPath#toPortableString()
      */
     public static final String getFullPathAsString(final IEditorPart part) {
-        IFile file = getFile(part);
+        final IFile file = getFile(part);
         return file == null ? null : file.getFullPath().toPortableString();
     }
 
@@ -81,9 +81,9 @@ public final class ResourceUtils {
         if (!(part instanceof ITextEditor)) {
             return null;
         }
-        ITextEditor editor = (ITextEditor) part;
-        IDocumentProvider provider = editor.getDocumentProvider();
-        IDocument document = provider.getDocument(editor.getEditorInput());
+        final ITextEditor editor = (ITextEditor) part;
+        final IDocumentProvider provider = editor.getDocumentProvider();
+        final IDocument document = provider.getDocument(editor.getEditorInput());
         return document == null ? null : document.get();
     }
 }

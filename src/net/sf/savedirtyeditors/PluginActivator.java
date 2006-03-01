@@ -31,7 +31,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
     /**
      * A flag used by the plugin to determine whether to log info messages.
      */
-    private static boolean INFO = false;
+    private static final boolean INFO = false;
 
     // The shared instance.
     private static PluginActivator plugin;
@@ -60,14 +60,14 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
         PlatformUI.getWorkbench().addWindowListener(windowListener);
 
         // add a part listener to the parts in each workbench window in the current workbench
-        IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
+        final IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
         for (int i = 0; i < workbenchWindows.length; i++) {
-            IWorkbenchWindow workbenchWindow = workbenchWindows[i];
+            final IWorkbenchWindow workbenchWindow = workbenchWindows[i];
             workbenchWindow.getPartService().addPartListener(partListener);
             // iff there's already an active editor - fire an event for part opened
             // NOTE: We dont need to recurse through all open editors, since the partOpened event will be fired when
             // each editor gets focus
-            IEditorPart activeEditor = workbenchWindow.getActivePage().getActiveEditor();
+            final IEditorPart activeEditor = workbenchWindow.getActivePage().getActiveEditor();
             if (activeEditor != null) {
                 partListener.partOpened(activeEditor);
             }
@@ -82,7 +82,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
     public void stop(final BundleContext context) throws Exception {
         try {
             // remove the part listener from the parts in the current workbench
-            IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
+            final IWorkbenchWindow[] workbenchWindows = PlatformUI.getWorkbench().getWorkbenchWindows();
             for (int i = 0; i < workbenchWindows.length; i++) {
                 workbenchWindows[i].getPartService().removePartListener(partListener);
             }
@@ -116,7 +116,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      *         {@link IPreferenceStore#getLong(String)}
      * @see IPreferenceStore#getLong(String)
      */
-    public static final long getLongPreference(String key) {
+    public static final long getLongPreference(final String key) {
         return getDefault().getPreferenceStore().getLong(key);
     }
 
@@ -129,7 +129,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      *         {@link IPreferenceStore#getString(String)}
      * @see IPreferenceStore#getString(String)
      */
-    public static final String getStringPreference(String key) {
+    public static final String getStringPreference(final String key) {
         return getDefault().getPreferenceStore().getString(key);
     }
 
@@ -163,7 +163,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      */
     public static final void logDebug(final String message) {
         // HACKTAG: Dont know why - but we need to do a null check (for 3.1)
-        if (getDefault() != null && getDefault().isDebugging()) {
+        if ((getDefault() != null) && getDefault().isDebugging()) {
             log(new Status(IStatus.WARNING, PluginConstants.PLUGIN_ID, IStatus.WARNING, message, null));
         }
     }

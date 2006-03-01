@@ -24,7 +24,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
      * @see AbstractPreferenceInitializer#initializeDefaultPreferences()
      */
     public void initializeDefaultPreferences() {
-        IEclipsePreferences node = new DefaultScope().getNode(PluginConstants.PLUGIN_ID);
+        final IEclipsePreferences node = new DefaultScope().getNode(PluginConstants.PLUGIN_ID);
 
         // auto-snapshot default
         node.putLong(PluginConstants.KEY_RESCHEDULE_DELAY, PluginConstants.DEFAULT_RESCHEDULE_DELAY);

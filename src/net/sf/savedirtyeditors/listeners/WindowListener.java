@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchWindow;
  * </ul>
  */
 public final class WindowListener implements IWindowListener {
-    private PartListener partListener = new PartListener();
+    private final PartListener partListener = new PartListener();
 
     /**
      * When a new {@link IWorkbenchWindow} is opened, adds the {@link IPartListener} to the {@link IPartService} of that
@@ -66,7 +66,7 @@ public final class WindowListener implements IWindowListener {
     public void windowDeactivated(final IWorkbenchWindow window) {
         window.getShell().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
+                final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
                 for (int i = 0; i < jobs.length; i++) {
                     jobs[i].wakeUp();
                 }
