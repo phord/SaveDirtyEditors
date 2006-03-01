@@ -56,20 +56,21 @@ public final class SaveSnapshotJob extends Job {
                 if ((IEditorPart.PROP_DIRTY != propId) || (editorPart != source)) {
                     return;
                 }
-                // if the previously dirty editor is now NOT dirty anymore...
                 if (!editorPart.isDirty()) {
-                    editorPart.getEditorSite().getWorkbenchWindow().getWorkbench().getDisplay().asyncExec(
-                            new Runnable() {
-                                public void run() {
-                                    complete();
-                                }
-                            });
+                    // if the previously dirty editor is now NOT dirty anymore...
+                    ResourceUtils.getDisplay(editorPart).asyncExec(new Runnable() {
+                        public void run() {
+                            cleanupSnapshot();
+                        }
+                    });
+                } else {
+                    // if the editorPart became dirty - either for the first time or after being saved...
+                    schedule();
                 }
             }
         };
         setSystem(true);
         setPriority(SHORT);
-        schedule();
         editorPart.addPropertyListener(stateListener);
     }
 
@@ -148,10 +149,18 @@ public final class SaveSnapshotJob extends Job {
         PluginActivator
                 .logDebug(Messages.getString("SaveSnapshotJob.complete") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
         // Need to clean the temp area
-        ResourceUtils.run(new DeleteSnapshotAction(editorPart));
+        cleanupSnapshot();
         completed = true;
         editorPart.removePropertyListener(stateListener);
         sleep();
         cancel();
+    }
+
+    /**
+     * Runs the {@link DeleteSnapshotAction} for the <code>editorPart</code> so as to clean up the snapshot file from
+     * the disk.
+     */
+    void cleanupSnapshot() {
+        ResourceUtils.run(new DeleteSnapshotAction(editorPart));
     }
 }
