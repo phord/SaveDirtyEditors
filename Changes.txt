@@ -1,4 +1,4 @@
-Changes in ver 0.0.6
+Changes in ver 1.0.0
 ********************
 [Feature]
 	o) Added preference page to set save interval and snapshot prefix/suffix.
