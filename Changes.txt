@@ -2,8 +2,13 @@ Changes in ver 1.0.1
 ********************
 [Misc]
 	o) Remove the snapshot when the editor is saved - since this leaves the snapshot lying
-	   around without any use.
+	   around without any use and could previously cause false positives on reconciliation
+	   events.
 	o) Various Performance enhancements (jobs are intelligently woken up/put to sleep).
+[Bug]
+	o) When using multiple monitors, if there was a reconciliation message popup, it
+	   could appear in any random workbench window - not necessarily the one where the editor
+	   was opened that prompted the reconciliation.
 ------------------------------------------------------------------------------------------------------------------
 Changes in ver 1.0.0
 ********************
