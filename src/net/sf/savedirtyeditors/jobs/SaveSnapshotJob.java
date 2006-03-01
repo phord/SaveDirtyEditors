@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPropertyListener;
 import org.osgi.framework.Bundle;
 
 /**
@@ -37,6 +38,7 @@ public final class SaveSnapshotJob extends Job {
     private final Bundle systemBundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
 
     private final IEditorPart editorPart;
+    private final IPropertyListener stateListener;
     private boolean completed = false;
     private boolean firstTime = true;
 
@@ -49,9 +51,26 @@ public final class SaveSnapshotJob extends Job {
     public SaveSnapshotJob(final IEditorPart editorPart) {
         super(Messages.getString("SaveSnapshotJob.running") + ResourceUtils.getFullPathAsString(editorPart)); //$NON-NLS-1$
         this.editorPart = editorPart;
+        this.stateListener = new IPropertyListener() {
+            public void propertyChanged(final Object source, final int propId) {
+                if ((IEditorPart.PROP_DIRTY != propId) || (editorPart != source)) {
+                    return;
+                }
+                // if the previously dirty editor is now NOT dirty anymore...
+                if (!editorPart.isDirty()) {
+                    editorPart.getEditorSite().getWorkbenchWindow().getWorkbench().getDisplay().asyncExec(
+                            new Runnable() {
+                                public void run() {
+                                    complete();
+                                }
+                            });
+                }
+            }
+        };
         setSystem(true);
         setPriority(SHORT);
         schedule();
+        editorPart.addPropertyListener(stateListener);
     }
 
     /**
@@ -131,6 +150,7 @@ public final class SaveSnapshotJob extends Job {
         // Need to clean the temp area
         ResourceUtils.run(new DeleteSnapshotAction(editorPart));
         completed = true;
+        editorPart.removePropertyListener(stateListener);
         sleep();
         cancel();
     }
