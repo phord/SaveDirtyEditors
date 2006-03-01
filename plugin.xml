@@ -31,5 +31,13 @@
             name="%filter.name.0"
             targetId="org.eclipse.jdt.ui.PackagesView"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.ui.preferencePages.GeneralTextEditor"
+            class="net.sf.savedirtyeditors.preferences.PluginPreferencePage"
+            id="net.sf.savedirtyeditors.PluginPreferencePage"
+            name="%prefPage.name.0"/>
+   </extension>
 
 </plugin>

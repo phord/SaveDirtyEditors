@@ -42,6 +42,11 @@ public interface PluginConstants {
     long DEFAULT_RESCHEDULE_DELAY = 300000;// 5 mins
 
     /**
+     * Label for reschedule delay preference page field.
+     */
+    String LABEL_RESCHEDULE_DELAY = Messages.getString("reschedule.delay.label"); //$NON-NLS-1$
+
+    /**
      * Key for storing snapshot name prefix.
      */
     String KEY_SNAPSHOT_NAME_PREFIX = "snapshot.name.prefix"; //$NON-NLS-1$
@@ -52,6 +57,11 @@ public interface PluginConstants {
     String DEFAULT_SNAPSHOT_NAME_PREFIX = Messages.getString(KEY_SNAPSHOT_NAME_PREFIX);
 
     /**
+     * Label for snapshot name prefix preference page field.
+     */
+    String LABEL_SNAPSHOT_NAME_PREFIX = Messages.getString("snapshot.name.prefix.label"); //$NON-NLS-1$
+
+    /**
      * Key for storing snapshot name suffix.
      */
     String KEY_SNAPSHOT_NAME_SUFFIX = "snapshot.name.suffix"; //$NON-NLS-1$
@@ -60,4 +70,9 @@ public interface PluginConstants {
      * Default value for snapshot name suffix.
      */
     String DEFAULT_SNAPSHOT_NAME_SUFFIX = Messages.getString(KEY_SNAPSHOT_NAME_SUFFIX);
+
+    /**
+     * Label for snapshot name suffix preference page field.
+     */
+    String LABEL_SNAPSHOT_NAME_SUFFIX = Messages.getString("snapshot.name.suffix.label"); //$NON-NLS-1$
 }
