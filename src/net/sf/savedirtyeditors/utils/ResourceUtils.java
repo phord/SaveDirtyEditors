@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -28,6 +29,17 @@ public final class ResourceUtils {
      */
     private ResourceUtils() {
         super();
+    }
+
+    /**
+     * A convenience method to extract the {@link Display} for the specified {@link IEditorPart}
+     * 
+     * @param editorPart
+     *            The IEditorPart whose Display has to be retrieved inside the active workbench window.
+     * @return The Display
+     */
+    public static final Display getDisplay(final IEditorPart editorPart) {
+        return editorPart.getEditorSite().getWorkbenchWindow().getWorkbench().getDisplay();
     }
 
     /**
