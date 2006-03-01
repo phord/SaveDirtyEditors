@@ -92,8 +92,11 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     }
 
     private FieldEditor createIntegerFieldEditor(Composite spacingComposite, String preferenceKey, String labelText) {
-        FieldEditor editor = new IntegerFieldEditor(preferenceKey, labelText, spacingComposite);
+        IntegerFieldEditor editor = new IntegerFieldEditor(preferenceKey, labelText, spacingComposite);
         editor.setPreferenceStore(PluginActivator.getDefault().getPreferenceStore());
+        editor.setValidRange(5000, Integer.MAX_VALUE);
+        editor.setErrorMessage(editor.getErrorMessage()
+                + Messages.getString("reschedule.delay.invalid") + Integer.MAX_VALUE); //$NON-NLS-1$
         editor.setPage(this);
         editor.load();
         return editor;
