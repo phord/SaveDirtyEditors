@@ -33,6 +33,7 @@ public final class PartListener implements IPartListener {
      * 
      * @param part
      *            The {@link IWorkbenchPart} that was opened
+     * @see IPartListener#partOpened(IWorkbenchPart)
      */
     public void partOpened(final IWorkbenchPart part) {
         // if the part is not an EditorPart - just quit
@@ -52,6 +53,7 @@ public final class PartListener implements IPartListener {
      * 
      * @param part
      *            The {@link IWorkbenchPart} that was closed
+     * @see IPartListener#partClosed(IWorkbenchPart)
      */
     public void partClosed(final IWorkbenchPart part) {
         // if the part is not an EditorPart - just quit
@@ -62,25 +64,58 @@ public final class PartListener implements IPartListener {
         PluginActivator.logDebug(Messages.getString("PartListener.part.unmonitoring")); //$NON-NLS-1$
 
         // Remove job
-        final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
-        for (int i = 0; i < jobs.length; i++) {
-            final SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
-            if (job.isForInput((IEditorPart) part)) {
-                job.complete();
-            }
+        final SaveSnapshotJob job = findJobFor((IEditorPart) part);
+        if (job != null) {
+            job.complete();
         }
     }
 
-    private boolean canProcess(final IWorkbenchPart part) {
-        return (part instanceof IEditorPart) && (ResourceUtils.getFile((IEditorPart) part) != null);
-    }
-
     /**
-     * Dummy implementation since we are not interested in this life-cycle event.
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, then it finds the specific
+     * {@link Job} associated with that {@link IEditorPart} and wakes it up.
      * 
+     * @param part
+     *            The {@link IWorkbenchPart} that was activated
      * @see IPartListener#partActivated(IWorkbenchPart)
      */
     public void partActivated(final IWorkbenchPart part) {
+        // NOTE: IF performance is an issue - we could put the job to sleep/wake cycles
+        // if the part is not an EditorPart - just quit
+        if (!canProcess(part)) {
+            return;
+        }
+
+        PluginActivator.logDebug(Messages.getString("PartListener.part.monitoring")); //$NON-NLS-1$
+
+        // Remove job
+        final SaveSnapshotJob job = findJobFor((IEditorPart) part);
+        if (job != null) {
+            job.wakeUp();
+        }
+    }
+
+    /**
+     * If the {@link IWorkbenchPart} passed in is an instance of {@link IEditorPart}, then it finds the specific
+     * {@link Job} associated with that {@link IEditorPart} and put it to sleep.
+     * 
+     * @param part
+     *            The {@link IWorkbenchPart} that was deactivated
+     * @see IPartListener#partDeactivated(IWorkbenchPart)
+     */
+    public void partDeactivated(final IWorkbenchPart part) {
+        // NOTE: IF performance is an issue - we could put the job to sleep/wake cycles
+        // if the part is not an EditorPart - just quit
+        if (!canProcess(part)) {
+            return;
+        }
+
+        PluginActivator.logDebug(Messages.getString("PartListener.part.unmonitoring")); //$NON-NLS-1$
+
+        // Remove job
+        final SaveSnapshotJob job = findJobFor((IEditorPart) part);
+        if (job != null) {
+            job.sleep();
+        }
     }
 
     /**
@@ -91,11 +126,18 @@ public final class PartListener implements IPartListener {
     public void partBroughtToTop(final IWorkbenchPart part) {
     }
 
-    /**
-     * Dummy implementation since we are not interested in this life-cycle event.
-     * 
-     * @see IPartListener#partDeactivated(IWorkbenchPart)
-     */
-    public void partDeactivated(final IWorkbenchPart part) {
+    private SaveSnapshotJob findJobFor(final IEditorPart part) {
+        final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
+        for (int i = 0; i < jobs.length; i++) {
+            final SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
+            if (job.isForInput(part)) {
+                return job;
+            }
+        }
+        return null;
+    }
+
+    private boolean canProcess(final IWorkbenchPart part) {
+        return (part instanceof IEditorPart) && (ResourceUtils.getFile((IEditorPart) part) != null);
     }
 }
