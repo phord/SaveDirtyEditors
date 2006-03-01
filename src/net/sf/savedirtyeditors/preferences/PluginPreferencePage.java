@@ -38,7 +38,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
      * @see PreferencePage#createContents(Composite)
      */
     protected Control createContents(final Composite parent) {
-        Composite composite = createComposite(parent);
+        final Composite composite = createComposite(parent);
 
         Composite spacingComposite = SWTHelper.createGroupComposite(composite, 2, Messages
                 .getString("snapshot.file.group")); //$NON-NLS-1$
@@ -83,16 +83,18 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
         return super.performOk();
     }
 
-    private FieldEditor createStringFieldEditor(Composite spacingComposite, String preferenceKey, String labelText) {
-        FieldEditor editor = new StringFieldEditor(preferenceKey, labelText, spacingComposite);
+    private FieldEditor createStringFieldEditor(final Composite spacingComposite, final String preferenceKey,
+            final String labelText) {
+        final FieldEditor editor = new StringFieldEditor(preferenceKey, labelText, spacingComposite);
         editor.setPreferenceStore(PluginActivator.getDefault().getPreferenceStore());
         editor.setPage(this);
         editor.load();
         return editor;
     }
 
-    private FieldEditor createIntegerFieldEditor(Composite spacingComposite, String preferenceKey, String labelText) {
-        IntegerFieldEditor editor = new IntegerFieldEditor(preferenceKey, labelText, spacingComposite);
+    private FieldEditor createIntegerFieldEditor(final Composite spacingComposite, final String preferenceKey,
+            final String labelText) {
+        final IntegerFieldEditor editor = new IntegerFieldEditor(preferenceKey, labelText, spacingComposite);
         editor.setPreferenceStore(PluginActivator.getDefault().getPreferenceStore());
         editor.setValidRange(5000, Integer.MAX_VALUE);
         editor.setErrorMessage(editor.getErrorMessage()
@@ -109,9 +111,9 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
      *            the parent composite
      * @return the composite for this page
      */
-    protected Composite createComposite(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
+    protected Composite createComposite(final Composite parent) {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        final GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         composite.setLayout(layout);
@@ -122,7 +124,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     /**
      * @see IWorkbenchPreferencePage#init(IWorkbench)
      */
-    public void init(IWorkbench workbench) {
+    public void init(final IWorkbench workbench) {
         // do nothing
     }
 
