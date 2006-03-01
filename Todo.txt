@@ -7,7 +7,6 @@ Functionality:
    Further - how can we access files outside the workspace (in the metadata area?) IFile always returns false for
    calls to exists()
 2) Filter for navigator view is hard-coded.
-3) Remove the snapshot when the editor is saved - since this leaves the snapshot lying around without any use.
 
 Support:
 --------

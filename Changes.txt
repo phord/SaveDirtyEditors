@@ -1,3 +1,10 @@
+Changes in ver 1.0.1
+********************
+[Misc]
+	o) Remove the snapshot when the editor is saved - since this leaves the snapshot lying
+	   around without any use.
+	o) Performance enhancements.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 1.0.0
 ********************
 [Feature]
