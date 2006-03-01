@@ -79,10 +79,10 @@ public final class SaveSnapshotAction extends BaseSnapshotAction {
             return;
         }
 
-        IFile origFile = getOriginalFile();
-        IFile snapshotFile = getSnapshotFile();
+        final IFile origFile = getOriginalFile();
+        final IFile snapshotFile = getSnapshotFile();
         InputStream inputStream = null;
-        String dirtyContents = ResourceUtils.getDirtyContents(editorPart);
+        final String dirtyContents = ResourceUtils.getDirtyContents(editorPart);
         try {
             inputStream = new ByteArrayInputStream(dirtyContents.getBytes(origFile.getCharset()));
             if (!snapshotFile.exists()) {
@@ -94,7 +94,7 @@ public final class SaveSnapshotAction extends BaseSnapshotAction {
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (IOException exc) {
+                } catch (final IOException exc) {
                     PluginActivator.logError(exc);
                 }
             }

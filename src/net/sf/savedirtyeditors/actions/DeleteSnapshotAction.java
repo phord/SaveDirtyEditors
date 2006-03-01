@@ -59,7 +59,7 @@ public final class DeleteSnapshotAction extends BaseSnapshotAction {
         // NOTE: dont verify if the editorPart is dirty - it might have been dirty at some point, but subsequently
         // saved, and the snapshot file would still be present since this is the only place where we delete the snapshot
 
-        IFile snapshotFile = getSnapshotFile();
+        final IFile snapshotFile = getSnapshotFile();
         // if the snapshotFile does not exist OR it is the same as the original file - dont proceed any further
         if (!snapshotFile.exists() || snapshotFile.equals(getOriginalFile())) {
             return;

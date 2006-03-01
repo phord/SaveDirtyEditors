@@ -61,9 +61,9 @@ abstract class BaseSnapshotAction implements ISafeRunnable {
      *         surrounded with the user-defined preferences for the snapshot name prefix and suffix.
      */
     protected final IFile getSnapshotFile() {
-        IFile origFile = getOriginalFile();
-        IPath origFileFolder = origFile.getParent().getFullPath();
-        IPath snapshotPath = origFileFolder.addTrailingSeparator().append(
+        final IFile origFile = getOriginalFile();
+        final IPath origFileFolder = origFile.getParent().getFullPath();
+        final IPath snapshotPath = origFileFolder.addTrailingSeparator().append(
                 PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_PREFIX) + origFile.getName()
                         + PluginActivator.getStringPreference(PluginConstants.KEY_SNAPSHOT_NAME_SUFFIX));
         return ResourcesPlugin.getWorkspace().getRoot().getFile(snapshotPath);

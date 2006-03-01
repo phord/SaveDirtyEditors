@@ -75,7 +75,7 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
         // so the snapshot file is still present
         PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                boolean confirmation = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(), Messages
+                final boolean confirmation = MessageDialog.openConfirm(Display.getCurrent().getActiveShell(), Messages
                         .getString("ReconcileSnapshotAction.reconcile.prompt.title"), //$NON-NLS-1$
                         Messages.getString("ReconcileSnapshotAction.reconcile.prompt.message") //$NON-NLS-1$
                                 + ResourceUtils.getFullPathAsString(editorPart));
