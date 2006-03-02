@@ -1,3 +1,14 @@
+Changes in ver 1.0.2
+********************
+[Bug]
+	o) Reconciliation is not triggered (if needed) when editor is opened. Its triggered
+	   (if needed) only when the user starts editing the file.
+	o) Since we were refreshing from the workspace root, ResourceDeltas were being missed
+	   (and this caused the Synchronize view to NOT show changed files for shared projects).
+	   Also, this could cause the process to be long running for huge projects or when the
+	   project was on a networked drive. Fix: Just do it from the parent of the snapshot
+	   file - since that is the smallest unit that we are interested in.
+------------------------------------------------------------------------------------------------------------------
 Changes in ver 1.0.1
 ********************
 [Misc]
