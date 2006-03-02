@@ -17,7 +17,6 @@ import net.sf.savedirtyeditors.utils.ResourceUtils;
 import org.eclipse.compare.internal.CompareAction;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -59,10 +58,11 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
      * @see IResource#refreshLocal(int, org.eclipse.core.runtime.IProgressMonitor)
      */
     public void run() throws CoreException {
-        // for some reason the snapshot file is not being recognized as being already present unless we refresh
-        ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-
         final IFile snapshotFile = getSnapshotFile();
+
+        // for some reason the snapshot file is not being recognized as being already present unless we refresh
+        snapshotFile.getParent().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+
         // if the snapshotFile does not exist OR it is the same as the original file - dont proceed any further
         if (!snapshotFile.exists() || snapshotFile.equals(getOriginalFile())) {
             return;
