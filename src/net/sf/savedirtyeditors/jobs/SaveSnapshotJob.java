@@ -71,6 +71,8 @@ public final class SaveSnapshotJob extends Job {
         };
         setSystem(true);
         setPriority(SHORT);
+        // schedule the job here itself - in case a reconciliation is needed
+        schedule();
         editorPart.addPropertyListener(stateListener);
     }
 
