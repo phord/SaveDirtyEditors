@@ -111,7 +111,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
      *            the parent composite
      * @return the composite for this page
      */
-    protected Composite createComposite(final Composite parent) {
+    private Composite createComposite(final Composite parent) {
         final Composite composite = new Composite(parent, SWT.NONE);
         final GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
