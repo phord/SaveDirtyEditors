@@ -17,9 +17,9 @@ import net.sf.savedirtyeditors.utils.ResourceUtils;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.ui.IEditorPart;
 
 /**

@@ -12,7 +12,7 @@ package net.sf.savedirtyeditors.utils;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
@@ -47,12 +47,10 @@ public final class ResourceUtils {
      * 
      * @param runnable
      *            The code to run
-     * @see Platform#run(ISafeRunnable)
+     * @see SafeRunner#run(ISafeRunnable)
      */
     public static final void run(final ISafeRunnable runnable) {
-        // HACKTAG: for 3.1 compatibility - cant use SafeRunner.run(ISafeRunnable)
-        // Once we move to 3.2, remove deprecation
-        Platform.run(runnable);
+        SafeRunner.run(runnable);
     }
 
     /**
