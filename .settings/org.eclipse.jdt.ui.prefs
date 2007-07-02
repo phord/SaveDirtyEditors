@@ -1,8 +1,8 @@
-#Thu Feb 23 09:25:14 CST 2006
+#Sun Jul 01 08:27:46 CDT 2007
 eclipse.preferences.version=1
 formatter_profile=_SaveDirtyEditors
 formatter_settings_version=10
-internal.default.compliance=user
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 org.eclipse.jdt.ui.exception.name=exc
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.ignorelowercasenames=true
