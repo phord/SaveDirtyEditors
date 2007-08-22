@@ -16,7 +16,6 @@ import net.sf.savedirtyeditors.jobs.SaveSnapshotJob;
 import net.sf.savedirtyeditors.utils.Messages;
 import net.sf.savedirtyeditors.utils.ResourceUtils;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
@@ -127,7 +126,7 @@ public final class PartListener implements IPartListener {
     }
 
     private SaveSnapshotJob findJobFor(final IEditorPart part) {
-        final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
+        final Job[] jobs = Job.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
         for (int i = 0; i < jobs.length; i++) {
             final SaveSnapshotJob job = (SaveSnapshotJob) jobs[i];
             if (job.isForInput(part)) {

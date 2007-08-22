@@ -14,7 +14,6 @@ import net.sf.savedirtyeditors.PluginActivator;
 import net.sf.savedirtyeditors.PluginConstants;
 import net.sf.savedirtyeditors.utils.Messages;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
@@ -66,7 +65,7 @@ public final class WindowListener implements IWindowListener {
     public void windowDeactivated(final IWorkbenchWindow window) {
         window.getShell().getDisplay().asyncExec(new Runnable() {
             public void run() {
-                final Job[] jobs = Platform.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
+                final Job[] jobs = Job.getJobManager().find(PluginConstants.JOB_FAMILY_NAME);
                 for (int i = 0; i < jobs.length; i++) {
                     jobs[i].wakeUp();
                 }
