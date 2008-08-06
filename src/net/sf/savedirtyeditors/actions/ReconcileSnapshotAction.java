@@ -27,9 +27,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * A <code>ReconcileSnapshotAction</code> will be called when the wo save the {@link IEditorPart} that it is
- * associated with into a temporary area. If there is already a file for the same {@link IEditorPart} in the temp area,
- * this will overwrite the contents of that file with the contents of the {@link IEditorPart}
+ * A <code>ReconcileSnapshotAction</code> will be called when the wo save the {@link IEditorPart} that it is associated
+ * with into a temporary area. If there is already a file for the same {@link IEditorPart} in the temp area, this will
+ * overwrite the contents of that file with the contents of the {@link IEditorPart}
  */
 public class ReconcileSnapshotAction extends BaseSnapshotAction {
     /**
@@ -50,7 +50,7 @@ public class ReconcileSnapshotAction extends BaseSnapshotAction {
      * @exception CoreException
      *                if this method fails. Reasons include:
      *                <ul>
-     *                <li> Resource changes are disallowed during certain types of resource change event notification.
+     *                <li>Resource changes are disallowed during certain types of resource change event notification.
      *                See <code>IResourceChangeEvent</code> for more details.</li>
      *                </ul>
      * @exception OperationCanceledException

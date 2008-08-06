@@ -90,8 +90,8 @@ public final class SaveSnapshotJob extends Job {
      * 
      * @param editorPart
      *            The IEditorPart that needs to be tested
-     * @return True if the <code>editorPart</code> is the same exact instance as the one that this Job was created
-     *         for; false otherwise
+     * @return True if the <code>editorPart</code> is the same exact instance as the one that this Job was created for;
+     *         false otherwise
      */
     public boolean isForInput(final IEditorPart editorPart) {
         return this.editorPart == editorPart;

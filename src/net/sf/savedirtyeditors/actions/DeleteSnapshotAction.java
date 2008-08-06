@@ -44,10 +44,10 @@ public final class DeleteSnapshotAction extends BaseSnapshotAction {
      * @exception CoreException
      *                if this method fails. Reasons include:
      *                <ul>
-     *                <li> This resource could not be deleted for some reason.</li>
-     *                <li> This resource or one of its descendents is out of sync with the local file system and
+     *                <li>This resource could not be deleted for some reason.</li>
+     *                <li>This resource or one of its descendents is out of sync with the local file system and
      *                <code>force</code> is <code>false</code>.</li>
-     *                <li> Resource changes are disallowed during certain types of resource change event notification.
+     *                <li>Resource changes are disallowed during certain types of resource change event notification.
      *                See <code>IResourceChangeEvent</code> for more details.</li>
      *                </ul>
      * @exception OperationCanceledException

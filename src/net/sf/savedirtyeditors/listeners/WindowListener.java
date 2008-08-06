@@ -25,8 +25,8 @@ import org.eclipse.ui.IWorkbenchWindow;
  * <ul>
  * <li>wake up all {@link Job}s pertaining to this plugin's family and perform their respective operations even though
  * their scheduled times might not have arrived.</li>
- * <li>listen to new {@link IWorkbenchWindow}s being opened or closed and add {@link IPartListener} to their
- * respective {@link IPartService}s
+ * <li>listen to new {@link IWorkbenchWindow}s being opened or closed and add {@link IPartListener} to their respective
+ * {@link IPartService}s
  * </ul>
  */
 public final class WindowListener implements IWindowListener {

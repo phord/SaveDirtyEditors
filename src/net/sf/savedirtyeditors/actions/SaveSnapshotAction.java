@@ -28,9 +28,9 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * A <code>SaveSnapshotAction</code> will save the {@link IEditorPart} that it is associated with into a temporary
- * area. If there is already a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents
- * of that file with the contents of the {@link IEditorPart}
+ * A <code>SaveSnapshotAction</code> will save the {@link IEditorPart} that it is associated with into a temporary area.
+ * If there is already a file for the same {@link IEditorPart} in the temp area, this will overwrite the contents of
+ * that file with the contents of the {@link IEditorPart}
  */
 public final class SaveSnapshotAction extends BaseSnapshotAction {
     /**
@@ -44,25 +44,25 @@ public final class SaveSnapshotAction extends BaseSnapshotAction {
     }
 
     /**
-     * Updates the snapshot for the <code>editorPart</code> with the latest contents when this method is called.
-     * Calling this method repeatedly will just keep overwriting the snapshot.
+     * Updates the snapshot for the <code>editorPart</code> with the latest contents when this method is called. Calling
+     * this method repeatedly will just keep overwriting the snapshot.
      * 
      * @exception CoreException
      *                if this method fails. Reasons include:
      *                <ul>
-     *                <li> The parent of this resource does not exist.</li>
-     *                <li> The project of this resource is not accessible.</li>
-     *                <li> The parent contains a resource of a different type at the same path as this resource.</li>
-     *                <li> The name of this resource is not valid (according to <code>IWorkspace.validateName</code>).</li>
-     *                <li> The corresponding location in the local file system is occupied by a directory.</li>
-     *                <li> The corresponding location in the local file system is occupied by a file and
+     *                <li>The parent of this resource does not exist.</li>
+     *                <li>The project of this resource is not accessible.</li>
+     *                <li>The parent contains a resource of a different type at the same path as this resource.</li>
+     *                <li>The name of this resource is not valid (according to <code>IWorkspace.validateName</code>).</li>
+     *                <li>The corresponding location in the local file system is occupied by a directory.</li>
+     *                <li>The corresponding location in the local file system is occupied by a file and
      *                <code>force </code> is <code>false</code>.</li>
-     *                <li> Resource changes are disallowed during certain types of resource change event notification.
+     *                <li>Resource changes are disallowed during certain types of resource change event notification.
      *                See <code>IResourceChangeEvent</code> for more details.</li>
      *                </ul>
-     *                <li> The workspace is not in sync with the corresponding location in the local file system and
-     *                <code>force </code> is <code>false</code>.</li>
-     *                <li> The file modification validator disallowed the change.</li>
+     *                <li>The workspace is not in sync with the corresponding location in the local file system and
+     *                <code>force </code> is <code>false</code>.</li> <li>The file modification validator disallowed the
+     *                change.</li>
      * @exception UnsupportedEncodingException
      *                If the named charset is not supported
      * @exception OperationCanceledException
