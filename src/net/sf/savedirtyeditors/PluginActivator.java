@@ -79,6 +79,7 @@ public class PluginActivator extends AbstractUIPlugin implements IStartup {
      * 
      * @see AbstractUIPlugin#stop(BundleContext)
      */
+    @Override
     public void stop(final BundleContext context) throws Exception {
         try {
             // remove the part listener from the parts in the current workbench

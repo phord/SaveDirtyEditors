@@ -37,6 +37,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     /**
      * @see PreferencePage#createContents(Composite)
      */
+    @Override
     protected Control createContents(final Composite parent) {
         final Composite composite = createComposite(parent);
 
@@ -63,6 +64,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
      * 
      * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
      */
+    @Override
     protected void performDefaults() {
         snapshotNamePrefix.loadDefault();
         snapshotNameSuffix.loadDefault();
@@ -75,6 +77,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
      * 
      * @see org.eclipse.jface.preference.IPreferencePage#performOk()
      */
+    @Override
     public boolean performOk() {
         snapshotNamePrefix.store();
         snapshotNameSuffix.store();
@@ -131,6 +134,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     /**
      * Disposes any internal undisposed SWT widgets.
      */
+    @Override
     public void dispose() {
         if (snapshotNamePrefix != null) {
             snapshotNamePrefix.dispose();

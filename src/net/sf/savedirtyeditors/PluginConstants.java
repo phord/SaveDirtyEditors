@@ -39,7 +39,7 @@ public interface PluginConstants {
     /**
      * Default value for reschedule delay.
      */
-    long DEFAULT_RESCHEDULE_DELAY = 300000;// 5 mins
+    long DEFAULT_RESCHEDULE_DELAY = 15000;// 15 secs
 
     /**
      * Label for reschedule delay preference page field.

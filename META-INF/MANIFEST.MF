@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: SaveDirtyEditors;singleton:=true
-Bundle-Version: 1.0.2
+Bundle-Version: 2.0.0
 Bundle-Activator: net.sf.savedirtyeditors.PluginActivator
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: net.sf.savedirtyeditors,
  net.sf.savedirtyeditors.actions,
  net.sf.savedirtyeditors.filters,
@@ -15,11 +15,11 @@ Export-Package: net.sf.savedirtyeditors,
  net.sf.savedirtyeditors.preferences,
  net.sf.savedirtyeditors.utils
 Bundle-ClassPath: SaveDirtyEditors.jar
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.2.0",
- org.eclipse.core.resources;bundle-version="3.2.0",
- org.eclipse.ui;bundle-version="3.2.0",
- org.eclipse.ui.ide;bundle-version="3.2.0",
- org.eclipse.ui.workbench.texteditor;bundle-version="3.2.0",
- org.eclipse.jface.text;bundle-version="3.2.0",
- org.eclipse.compare;bundle-version="3.2.0"
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Require-Bundle:  org.eclipse.compare;bundle-version="3.4.0",
+ org.eclipse.core.resources;bundle-version="3.4.0",
+ org.eclipse.core.runtime;bundle-version="3.4.0",
+ org.eclipse.jface.text;bundle-version="3.4.0",
+ org.eclipse.ui;bundle-version="3.4.0",
+ org.eclipse.ui.ide;bundle-version="3.4.0",
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.4.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

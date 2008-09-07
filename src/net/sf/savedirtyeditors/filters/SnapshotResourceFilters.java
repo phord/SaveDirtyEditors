@@ -51,6 +51,7 @@ public class SnapshotResourceFilters extends ViewerFilter {
      * @return <code>true</code> if element is included in the filtered set, and <code>false</code> if excluded
      * @see ViewerFilter#select(Viewer, Object, Object)
      */
+    @Override
     public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
         // if both the prefix and suffix are empty - then dont proceed (or else we will filter out every member!)
         if (shouldApply && (element instanceof IResource)) {

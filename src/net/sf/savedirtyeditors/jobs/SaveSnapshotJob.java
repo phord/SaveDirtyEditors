@@ -81,6 +81,7 @@ public final class SaveSnapshotJob extends Job {
      * 
      * @see Job#belongsTo(Object)
      */
+    @Override
     public boolean belongsTo(final Object family) {
         return PluginConstants.JOB_FAMILY_NAME.equals(family);
     }
@@ -100,6 +101,7 @@ public final class SaveSnapshotJob extends Job {
     /**
      * @see Job#shouldRun()
      */
+    @Override
     public boolean shouldRun() {
         return !completed;
     }
@@ -107,6 +109,7 @@ public final class SaveSnapshotJob extends Job {
     /**
      * @see Job#shouldSchedule()
      */
+    @Override
     public boolean shouldSchedule() {
         return !completed;
     }
@@ -114,6 +117,7 @@ public final class SaveSnapshotJob extends Job {
     /**
      * @see Job#run(IProgressMonitor)
      */
+    @Override
     protected IStatus run(final IProgressMonitor monitor) {
         // if the system is shutting down, don't build
         if (systemBundle.getState() == Bundle.STOPPING) {

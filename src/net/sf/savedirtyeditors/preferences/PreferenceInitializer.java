@@ -23,6 +23,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     /**
      * @see AbstractPreferenceInitializer#initializeDefaultPreferences()
      */
+    @Override
     public void initializeDefaultPreferences() {
         final IEclipsePreferences node = new DefaultScope().getNode(PluginConstants.PLUGIN_ID);
 
